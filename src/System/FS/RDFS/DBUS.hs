@@ -57,15 +57,14 @@ listDir path = do
   -- print $ reply
 
   let Just n = fromVariant (head (methodReturnBody reply))
-  let f = unlines (drop 2 (lines n))
-  let xml = head (xread f)
+      f = unlines (drop 2 (lines n))
+      xml = head (xread f)
+      -- let interfaces = getXPath "node/interface" xml
+      --  print $ interfaces
+      nodes = getXPath "node/node/attribute::name/text()" xml
+      methods = [met | NTree (XText met) _ <- nodes]
+      --  print $ methods
 
-  let interfaces = getXPath "node/interface" xml
-  --  print $ interfaces
-
-  let nodes = getXPath "node/node/attribute::name/text()" xml
-  let methods = [let NTree (XText met) _ = n in met | n <- nodes]
-  --  print $ methods
   return methods
 
 waitForReply :: Connection -> Serial -> IO MethodReturn
