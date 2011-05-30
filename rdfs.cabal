@@ -1,0 +1,38 @@
+Name:           RDFS
+Version:        0.0.1
+Cabal-Version:  >= 1.8
+License:        MIT
+License-File:   LICENSE
+Author:         Maxim Treskin
+Homepage:       http://github.com/realdesktop/rdfs/
+Category:       System
+Synopsis:       Real Desktop File System
+
+Build-Type:     Simple
+
+Library
+    Build-Depends:      base,
+                        directory,
+                        filepath,
+                        HFuse >= 0.2.4,
+                        bytestring,
+                        containers,
+                        unix,
+                        network,
+                        dbus-core,
+                        dbus-client,
+                        hxt,
+                        hxt-xpath
+
+    Hs-Source-Dirs:     src
+    Exposed-Modules:
+        System.FS.RDFS System.FS.RDFS.DBUS
+
+Executable rdfs
+    Build-Depends:   base,
+                     directory,
+                     haskell98,
+                     RDFS
+    GHC-Options:     -rtsopts -fno-cse -threaded
+    Main-Is:         Main.hs
+    Hs-Source-Dirs:  exec
