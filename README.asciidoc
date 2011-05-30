@@ -1,0 +1,39 @@
+= Real Desktop File System =
+
+This is unixish way to access to system resources via filesystem.
+
+== Description ==
+
+At this time just wrapper over DBus which wraps requests to DBus behind filesystem
+based on FUSE.
+
+To use RDFS you must configure PAM to create new namespace on session startup:
+
++/etc/pam.d/system-auth:+
+
+--------------------------------------
+...
+session     required    pam_namespace.so
+...
+--------------------------------------
+
++/etc/security/namespace.conf:+
+
+--------------------------------------
+/rdc   /rdc-inst/  user
+--------------------------------------
+
+Then create directory +/rdc+ with mode +0700+.
+
+Now every users will have directory +/rdc+ in own namespace for *each session*.
+
+When user runs +rdfs /rdc+ some directories will appears in this directory:
+
+--------------------------------------
+[zert@zert]:~ $>> ls -1 /rdc/
+dbus
+rd
+--------------------------------------
+
+Directory +dbus+ contains DBus resources in file representation.
+Directory +rd+ just reserved for further usage.
