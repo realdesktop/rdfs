@@ -57,11 +57,10 @@ listDir path = do
   -- print $ reply
 
   let Just n = fromVariant (head (methodReturnBody reply))
-      f = unlines (drop 2 (lines n))
-      xml = head (xread f)
+      f = parseXmlDocument "dbus" n
       -- let interfaces = getXPath "node/interface" xml
       --  print $ interfaces
-      nodes = getXPath "node/node/attribute::name/text()" xml
+      nodes = getXPath "node/node/attribute::name/text()" (f !! 2)
       methods = [met | NTree (XText met) _ <- nodes]
       --  print $ methods
 
