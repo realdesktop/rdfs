@@ -12,7 +12,7 @@ import Text.XML.HXT.Parser.XmlParsec
 import Text.XML.HXT.XPath.XPathEval
 import Text.XML.HXT.DOM.TypeDefs
 import Data.Tree.NTree.TypeDefs
-
+import Data.Text.Lazy  (pack)
 
 listServices :: IO [String]
 listServices = do
@@ -37,16 +37,16 @@ listServices = do
   return names
 
 listDir :: String -> IO [String]
-listDir path = do
+listDir path@('/':sn) = do
   (bus, name) <- getSessionBus
-  putStrLn $ "Connected as: " ++ show name
+  putStrLn $ "Connected as: " ++ show name ++ " for " ++ path
 
   -- Request a list of connected clients from the bus
   Right serial <- send bus return MethodCall
                  { methodCallPath = "/"
 	         , methodCallMember = "Introspect"
 	         , methodCallInterface = Just "org.freedesktop.DBus.Introspectable"
-	         , methodCallDestination = Just "org.kde.amarok"
+	         , methodCallDestination = mkBusName (pack sn)
 	         , methodCallFlags = Set.empty
 	         , methodCallBody = []
 	         }

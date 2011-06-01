@@ -22,7 +22,8 @@ Library
                         dbus-core,
                         dbus-client,
                         hxt,
-                        hxt-xpath
+                        hxt-xpath,
+                        text
 
     Hs-Source-Dirs:     src
     Exposed-Modules:
